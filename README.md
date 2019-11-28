@@ -9,6 +9,5 @@ See `requirements.txt`.
 ## Usage
 
 ```
-./script.py example/5adc7588-b72d-41d2-b5bc-771880902a9d.xml 
+./script.py example/19119_1.2_atom.xml
 ```
-
