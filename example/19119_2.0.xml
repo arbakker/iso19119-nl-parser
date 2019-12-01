@@ -302,7 +302,7 @@
          <gmd:resourceConstraints>
             <gmd:MD_Constraints>
                <gmd:useLimitation>
-                  <gco:CharacterString>Gebruik versie 1.0.0, https://geodata.nationaalgeoregister.nl/vin/wfs?version=1.0.0&amp;request=GetCapabilitiesMaximum aantal te downloaden objecten is 15.000</gco:CharacterString>
+                  <gco:CharacterString>Gebruik versie 1.0.0, https://geodata.nationaalgeoregister.nl/vin/wfs?version=1.0.0&amp;request=GetCapabilities Maximum aantal te downloaden objecten is 15.000</gco:CharacterString>
                </gmd:useLimitation>
             </gmd:MD_Constraints>
          </gmd:resourceConstraints>

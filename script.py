@@ -14,6 +14,7 @@ SERVICE_TYPES = {
     "OGC:WCS": "WCS",
     "OGC:SOS": "SOS",
     "INSPIRE Atom": "ATOM"
+    "UKST": "TMS"
 }
 
 XPATH_METADATA="/gmd:MD_Metadata"
