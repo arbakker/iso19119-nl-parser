@@ -9,5 +9,5 @@ See `requirements.txt`.
 ## Usage
 
 ```
-./script.py example/19119_1.2_atom.xml
+convert-metadata example/19119_1.2_atom.xml
 ```
