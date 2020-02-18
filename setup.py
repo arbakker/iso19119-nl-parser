@@ -5,7 +5,7 @@ with open('README.md') as f:
 
 setup(
     name='iso19119-nl-parser',
-    version='0.1',
+    version='0.0.1',
     description='PDOK service metadata (ISO19119) paraser',
     long_description=README,
     author='Anton Bakker',
