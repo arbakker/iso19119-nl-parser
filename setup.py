@@ -4,9 +4,9 @@ with open('README.md') as f:
     README = f.read()
 
 setup(
-    name='service-metadata-converter',
+    name='iso19119-nl-parser',
     version='0.1',
-    description='PDOK Service Metadata converter',
+    description='PDOK service metadata (ISO19119) paraser',
     long_description=README,
     author='Anton Bakker',
     author_email='anton.bakker@kadaster.nl',
@@ -17,7 +17,6 @@ setup(
     ],
     entry_points='''
         [console_scripts]
-        convert-md=service_md_converter.cli:main
-        convert-metadata=service_md_converter.cli:main
+        parse-md=iso19119_parser.cli:main
     ''',
 )

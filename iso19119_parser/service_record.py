@@ -151,6 +151,17 @@ class ServiceRecord():
                     f"md_id: {self.metadata_id}, could not determine license url in gmd:MD_LegalConstraints, found {url_val}")
         return result
 
+    def is_inspire(self):
+        # record is considered inspire record if has inspire theme defined
+        xpath = f"{self.xpath_service_id}/gmd:descriptiveKeywords/gmd:MD_Keywords/gmd:thesaurusName/gmd:CI_Citation/\
+            gmd:title/gmx:Anchor[@xlink:href='http://www.eionet.europa.eu/gemet/inspire_themes']/../../../../gmd:keyword/gmx:Anchor/@xlink:href"
+        uri = self.get_single_xpath_att(xpath)
+        if uri:
+            return True
+        else:
+            return False
+
+
     def get_thumbnails(self):
         result = []
         xpath = f"{self.xpath_service_id}/gmd:graphicOverview/gmd:MD_BrowseGraphic"
@@ -207,8 +218,9 @@ class ServiceRecord():
             result_list.append(result)
         return result_list
 
-    def convert_to_dictionary(self, inspire):
+    def convert_to_dictionary(self):
         result = {}
+        inspire = self.is_inspire()
         result["inspire"] = inspire
         if inspire:
             result["inspire_theme_uri"] = self.get_inspire_theme_url()
