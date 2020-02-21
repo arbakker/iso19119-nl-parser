@@ -1,17 +1,33 @@
+import os.path
+from urllib.parse import parse_qs, urlparse
 import lxml.etree as et
-from urllib.parse import parse_qs, urlencode, urlparse, urlunparse
 from .util import is_url, get_service_cap_key
 
 class ServiceRecord():
-    def __init__(self, file_path):
+    def __init__(self, input_string):
+        if os.path.isfile(input_string):
+            with open(input_string) as md_file:
+                xml_string = md_file.read()
+        else:
+            xml_string = input_string
         xpath_metadata = "/gmd:MD_Metadata"
-        with open(file_path) as md_file:
-            xml = md_file.read()
-        self.etree = et.fromstring(xml.encode("utf-8"))
+
+        self.xml_string = xml_string
+        self.etree = et.fromstring(xml_string.encode("utf-8"))
         self.xpath_metadata = xpath_metadata
         self.xpath_service_id = f"{xpath_metadata}/gmd:identificationInfo/srv:SV_ServiceIdentification"
-        self.namespaces = {"gmx": "http://www.isotc211.org/2005/gmx", "gmd": "http://www.isotc211.org/2005/gmd", "csw": "http://www.opengis.net/cat/csw/2.0.2", "gco": "http://www.isotc211.org/2005/gco", "gml": "http://www.opengis.net/gml",
-                   "gmx": "http://www.isotc211.org/2005/gmx", "gsr": "http://www.isotc211.org/2005/gsr", "gts": "http://www.isotc211.org/2005/gts", "srv": "http://www.isotc211.org/2005/srv", "xlink": "http://www.w3.org/1999/xlink", "geonet": "http://www.fao.org/geonetwork"}
+        self.namespaces = {
+            "csw": "http://www.opengis.net/cat/csw/2.0.2",
+            "gco": "http://www.isotc211.org/2005/gco",
+            "geonet": "http://www.fao.org/geonetwork",
+            "gmd": "http://www.isotc211.org/2005/gmd",
+            "gml": "http://www.opengis.net/gml",
+            "gmx": "http://www.isotc211.org/2005/gmx",
+            "gsr": "http://www.isotc211.org/2005/gsr",
+            "gts": "http://www.isotc211.org/2005/gts",
+            "srv": "http://www.isotc211.org/2005/srv",
+            "xlink": "http://www.w3.org/1999/xlink",
+        }
         self.service_types = {
             "OGC:CSW": "CSW",
             "OGC:WMS": "WMS",
