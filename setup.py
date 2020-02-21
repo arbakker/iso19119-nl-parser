@@ -37,7 +37,7 @@ setup(
     extras_require={"test": tests_require},
     entry_points={
         "console_scripts": [
-            "parse-md = iso19119_parser.cli:main"
+            "parse-md = iso19119_nl_parser.cli:main"
         ]
     },
 )

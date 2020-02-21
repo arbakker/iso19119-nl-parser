@@ -209,8 +209,8 @@ class ServiceRecord():
             dataset_md_url = self.get_single_xpath_att(xpath_href, operateson)
             parsed = urlparse(dataset_md_url)
             dataset_md_identifier = parse_qs(parsed.query)['id'][0]
-            result["dataset_md_identifier"] = dataset_source_identifier
-            result["dataset_source_identifier"] = dataset_md_identifier
+            result["dataset_md_identifier"] = dataset_md_identifier
+            result["dataset_source_identifier"] = dataset_source_identifier
             if dataset_source_identifier == dataset_md_identifier:
                 raise ValueError(
                     f"md_id: {self.metadata_id}, invalid metadata content operateson @uuidref and id\
