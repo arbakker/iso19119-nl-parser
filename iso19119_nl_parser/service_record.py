@@ -7,13 +7,13 @@ class ServiceRecord():
     def __init__(self, input_string):
         if os.path.isfile(input_string):
             with open(input_string) as md_file:
-                xml_string = md_file.read()
+                xml_string = md_file.read().encode("utf-8")
         else:
             xml_string = input_string
         xpath_metadata = "/gmd:MD_Metadata"
 
         self.xml_string = xml_string
-        self.etree = et.fromstring(xml_string.encode("utf-8"))
+        self.etree = et.fromstring(xml_string)
         self.xpath_metadata = xpath_metadata
         self.xpath_service_id = f"{xpath_metadata}/gmd:identificationInfo/srv:SV_ServiceIdentification"
         self.namespaces = {
