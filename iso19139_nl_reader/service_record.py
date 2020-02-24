@@ -190,7 +190,8 @@ class ServiceRecord():
             result = "XML Syntax Error: {0}".format(err.msg)
         return result
 
-    def is_valid(self):
+
+    def schema_validation_errors(self):
         result = self.validate_xml_form()
         if result:
             return result
@@ -205,6 +206,11 @@ class ServiceRecord():
                 for error in schema.error_log:
                     result += f"\n\terror: {error.message}, line: {error.line}, column {error.column}"
         return result
+
+    def is_valid(self):
+        if self.schema_validation_errors():
+            return False
+        return True
 
     def get_thumbnails(self):
         result = []
