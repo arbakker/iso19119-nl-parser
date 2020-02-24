@@ -1,6 +1,6 @@
-# pdok-service-md-extractor
+# iso19139-nl-reader
 
-Converts (geo) service metadata documents (ISO 19119) to JSON. For now specifically targets "Nederlands metadata profiel op ISO 19119 voor services 1.2" metadata documents. 
+Reader for metadata documents (ISO 19139). CLI application converts metadata document (XML) to JSON. For now only service metadata is supported (ISO19119).
 
 ## Dependencies
 

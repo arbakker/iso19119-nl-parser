@@ -1,5 +1,6 @@
 import os.path
 from urllib.parse import parse_qs, urlparse
+import pkg_resources
 import lxml.etree as et
 from .util import is_url, get_service_cap_key
 
@@ -177,6 +178,33 @@ class ServiceRecord():
         else:
             return False
 
+    def validate_xml_form(self):
+        result = ""
+        try:
+            parser = et.XMLParser()
+            et.fromstring(self.xml_string, parser=parser)
+        except IOError:
+            result = "Invalid File"
+        # check for XML syntax errors
+        except et.XMLSyntaxError as err:
+            result = "XML Syntax Error: {0}".format(err.msg)
+        return result
+
+    def is_valid(self):
+        result = self.validate_xml_form()
+        if result:
+            return result
+        schema_path = pkg_resources.resource_filename(__name__,
+            "data/schema/schemas.opengis.net/csw/2.0.2/profiles/apiso/1.0.0/apiso.xsd")
+        with open(schema_path, 'rb') as xml_schema_file:
+            schema_doc = et.XML(xml_schema_file.read(), base_url=schema_path)
+            schema = et.XMLSchema(schema_doc)
+            parser = et.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
+            xml_string = et.XML(self.xml_string, parser=parser)
+            if not schema.validate(xml_string):
+                for error in schema.error_log:
+                    result += f"\n\terror: {error.message}, line: {error.line}, column {error.column}"
+        return result
 
     def get_thumbnails(self):
         result = []
@@ -256,9 +284,12 @@ class ServiceRecord():
         if not (pub_date or rev_date or create_date):
             raise ValueError(
                 f"md_id: {self.metadata_id}, at least one of publication, revision or creation date should be set")
-        if pub_date: result["service_publication_date"] = pub_date
-        if rev_date: result["service_revision_date"] = rev_date
-        if create_date: result["service_creation_date"] = create_date
+        if pub_date:
+            result["service_publication_date"] = pub_date
+        if rev_date:
+            result["service_revision_date"] = rev_date
+        if create_date:
+            result["service_creation_date"] = create_date
         result["keywords"] = self.get_keywords()
         result["service_gebruiksbeperkingen"] = self.get_uselimitations()
         result["service_licentie"] = self.get_license()
