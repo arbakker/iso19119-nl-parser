@@ -15,9 +15,6 @@ if os.path.isfile(req_path):
 with open("README.md") as f:
     README = f.read()
 
-install_requires = [
-    "lxml==4.2.1",
-]
 
 tests_require = [
     "pytest",
@@ -39,7 +36,7 @@ def get_data_files():
 setup(
     name="iso19139-nl-reader",
     version=version,
-    description="PDOK metadata (ISO 19139) parser",
+    description="PDOK metadata (ISO 19139) reader",
     long_description=README,
     # Get strings from http://www.python.org/pypi?%3Aaction=list_classifiers
     classifiers=["Programming Language :: Python"],
@@ -57,7 +54,7 @@ setup(
     extras_require={"test": tests_require},
     entry_points={
         "console_scripts": [
-            "read-iso=iso19139_nl_reader.cli:main"
+            "read-iso=iso19139_nl_reader.cli:cli"
         ]
     },
 )

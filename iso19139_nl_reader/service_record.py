@@ -4,6 +4,9 @@ import pkg_resources
 import lxml.etree as et
 from .util import is_url, get_service_cap_key
 
+class WarningError(Exception):
+    pass
+
 class ServiceRecord():
     def __init__(self, input_string):
         if os.path.isfile(input_string):
@@ -257,14 +260,15 @@ class ServiceRecord():
             xpath_href = "@xlink:href"
             dataset_source_identifier = self.get_single_xpath_att(xpath_uuidref, operateson)
             dataset_md_url = self.get_single_xpath_att(xpath_href, operateson)
-            parsed = urlparse(dataset_md_url)
+            parsed = urlparse(dataset_md_url.lower())
             dataset_md_identifier = parse_qs(parsed.query)['id'][0]
             result["dataset_md_identifier"] = dataset_md_identifier
             result["dataset_source_identifier"] = dataset_source_identifier
-            if dataset_source_identifier == dataset_md_identifier:
-                raise ValueError(
-                    f"md_id: {self.metadata_id}, invalid metadata content operateson @uuidref and id\
-                        from @xlink:href are equal, value: {dataset_source_identifier}")
+            # TODO: raise WarningException and implement exception handling for this type of exception
+            # if dataset_source_identifier == dataset_md_identifier:
+            #     raise WarningError(
+            #         f"md_id: {self.metadata_id}, invalid metadata content operateson @uuidref and id\
+            #             from @xlink:href are equal, value: {dataset_source_identifier}")
             result_list.append(result)
         return result_list
 
