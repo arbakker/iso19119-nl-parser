@@ -1,4 +1,4 @@
-from urllib.parse import parse_qs, urlencode, urlparse, urlunparse
+from urllib.parse import urlparse
 
 def is_url(url):
     try:

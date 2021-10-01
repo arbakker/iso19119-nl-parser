@@ -1,7 +1,8 @@
 import json
 import sys
-from .service_record import ServiceRecord
+from .metadata_record import MetadataRecord
 import click
+
 
 @click.group()
 def cli():
@@ -15,9 +16,10 @@ def cli():
     default=sys.stdin
     )
 def read_metadata_command(md_file):
-    service_record = ServiceRecord(md_file)
+    service_record = MetadataRecord(md_file)
     result = service_record.convert_to_dictionary()
     print(json.dumps(result, indent=4))
+
 
 @cli.command(name="validate")
 @click.argument(
@@ -26,7 +28,7 @@ def read_metadata_command(md_file):
     default=sys.stdin
     )
 def validate_metadata_command(md_file):
-    service_record = ServiceRecord(md_file)
+    service_record = MetadataRecord(md_file)
     result = service_record.schema_validation_errors()
     if result:
         print(result)
