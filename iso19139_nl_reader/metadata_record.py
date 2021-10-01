@@ -4,18 +4,12 @@ import pkg_resources
 import lxml.etree as et
 from .util import is_url
 
-
 class WarningError(Exception):
     pass
 
-
 class MetadataRecord():
-    def __init__(self, input_string):
-        if os.path.isfile(input_string):
-            with open(input_string) as md_file:
-                xml_string = md_file.read().encode("utf-8")
-        else:
-            xml_string = input_string
+    def __init__(self, md_file):
+        xml_string = md_file.read().encode("utf-8")
         xpath_metadata = "/gmd:MD_Metadata"
 
         self.xml_string = xml_string
@@ -301,6 +295,19 @@ class MetadataRecord():
 
     def get_service_dictionary(self):
         result = {}
+        inspire = self.is_inspire()
+        result["inspire"] = inspire
+        if inspire:
+            result["inspire_theme_uri"] = self.get_inspire_theme_url()
+        ogc_service_type = self.get_ogc_servicetype()
+        result["ogc_service_type"] = ogc_service_type
+        result["service_capabilities_url"] = self.get_service_capabilities_url()
+        result["md_standardname"] = self.get_metadatastandardname()
+        result["md_standardversion"] = self.get_metadatastandardversion()
+        result["md_identifier"] = self.get_mdidentifier()
+        result["datestamp"] = self.get_datestamp()
+        result["service_title"] = self.get_title()
+        result["service_abstract"] = self.get_abstract()
         pub_date = self.get_md_date("publication")
         rev_date = self.get_md_date("revision")
         create_date = self.get_md_date("creation")
