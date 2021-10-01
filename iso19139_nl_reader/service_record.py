@@ -2,18 +2,14 @@ import os.path
 from urllib.parse import parse_qs, urlparse
 import pkg_resources
 import lxml.etree as et
-from .util import is_url, get_service_cap_key
+from .util import is_url
 
 class WarningError(Exception):
     pass
 
 class ServiceRecord():
-    def __init__(self, input_string):
-        if os.path.isfile(input_string):
-            with open(input_string) as md_file:
-                xml_string = md_file.read().encode("utf-8")
-        else:
-            xml_string = input_string
+    def __init__(self, md_file):
+        xml_string = md_file.read().encode("utf-8")
         xpath_metadata = "/gmd:MD_Metadata"
 
         self.xml_string = xml_string
@@ -280,8 +276,7 @@ class ServiceRecord():
             result["inspire_theme_uri"] = self.get_inspire_theme_url()
         ogc_service_type = self.get_ogc_servicetype()
         result["ogc_service_type"] = ogc_service_type
-        service_cap_url_key = get_service_cap_key(result["ogc_service_type"])
-        result[service_cap_url_key] = self.get_service_capabilities_url()
+        result["service_capabilities_url"] = self.get_service_capabilities_url()
         result["md_standardname"] = self.get_metadatastandardname()
         result["md_standardversion"] = self.get_metadatastandardversion()
         result["md_identifier"] = self.get_mdidentifier()

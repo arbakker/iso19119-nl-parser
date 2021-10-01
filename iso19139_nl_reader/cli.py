@@ -1,5 +1,5 @@
-import argparse
 import json
+import sys
 from .service_record import ServiceRecord
 import click
 
@@ -9,14 +9,22 @@ def cli():
 
 
 @cli.command(name="read")
-@click.argument('md-file', type=click.Path(exists=True))
+@click.argument(
+    'md-file', 
+    type=click.File('r'),
+    default=sys.stdin
+    )
 def read_metadata_command(md_file):
     service_record = ServiceRecord(md_file)
     result = service_record.convert_to_dictionary()
     print(json.dumps(result, indent=4))
 
 @cli.command(name="validate")
-@click.argument('md-file', type=click.Path(exists=True))
+@click.argument(
+    'md-file', 
+    type=click.File('r'),
+    default=sys.stdin
+    )
 def validate_metadata_command(md_file):
     service_record = ServiceRecord(md_file)
     result = service_record.schema_validation_errors()
